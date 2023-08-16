@@ -6,5 +6,3 @@ class SeatingPlanInputGetter(Protocol):
     
     def get_desired_seat_number(self, desired_seat_class: int) -> int:
         ...
-
-    def 
