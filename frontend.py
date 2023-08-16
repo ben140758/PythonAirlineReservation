@@ -1,7 +1,8 @@
 import inputsanitisers
 import seat_plan
+import protocols
 
-class AirlineReservationFrontEnd:
+class AirlineReservationFrontEnd(protocols.SeatingPlanInputGetter):
     def __init__(self, seating_plan: seat_plan.SeatingPlan,input_sanitiser: inputsanitisers.InputSanitiserFactory) -> None:
         self.current_flight = 1
         self._seating_plan = seating_plan
@@ -45,6 +46,11 @@ class AirlineReservationFrontEnd:
         return remaining_seats_in_seat_class
     
     def _does_user_want_class_change(self, current_seat_class: int) -> bool:
+        is_seat_class_upgradeable = self.is_seat_class_upgradeable(current_seat_class)
+        prompt = "------------\nNo seats are available in your class, would you like an upgrade in class?\n y/n "
+        sanitiser = self._get_input_sanitiser("primitive")
+    
+    def _is_seat_class_upgradeable(self, seat_class: int) -> bool:
         ...
 
     def _does_user_want_seat_choice(self) -> bool:
