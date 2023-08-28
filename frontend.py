@@ -46,12 +46,26 @@ class AirlineReservationFrontEnd(protocols.SeatingPlanInputGetter):
         return remaining_seats_in_seat_class
     
     def _does_user_want_class_change(self, current_seat_class: int) -> bool:
-        is_seat_class_upgradeable = self.is_seat_class_upgradeable(current_seat_class)
+        # Look for seat class above
+        # Seat class above found?
+        # YES -> Seat class above has spare seats?
+            # YES -> Ask if they want to upgrade
+            # NO -> Seat class below?
+                # YES -> Seat class below has spare seats?
+                # NO -> No spare seats on whole flight
+        # NO -> Seat class below?
+            # YES -> Seat class below has spare seats?
+            # NO -> No spare seats on whole flight 
+
+        # 1 - Look for seat class above
+        # 2 - Seat class above found?
+        # 3 - YES -> Seat class above has spare seats
+        is_seat_class_upgradeable = self._is_seat_class_upgradeable(current_seat_class)
         prompt = "------------\nNo seats are available in your class, would you like an upgrade in class?\n y/n "
         sanitiser = self._get_input_sanitiser("primitive")
     
     def _is_seat_class_upgradeable(self, seat_class: int) -> bool:
-        ...
+        return 
 
     def _does_user_want_seat_choice(self) -> bool:
         prompt = "------------\nWould you like to choose a seat number in your desired seating class?\n y/n "
@@ -86,6 +100,22 @@ class AirlineReservationFrontEnd(protocols.SeatingPlanInputGetter):
                 print("------------\nThis seat is taken, choose a different seat.")
         return desired_seat_number
     
+
+class SeatPlanSeatClassSpaceChecker(protocols.SeatingPlanClassSeatCheckerBase):
+    def __init__(self, seating_plan: seat_plan.SeatingPlan) -> None:
+        self._seating_plan = seating_plan
+
+    def is_current_seat_class_full(self, current_seat_class: int) -> bool:
+        ...
+
+    def is_seat_class_above_full(self, upper_seat_class: int) -> bool:
+        ...
+
+    def is_seat_class_below_full(self, uppper_seat_class: int) -> bool:
+        ...
+
+     
+
 
 if __name__ == "__main__":
     afe = AirlineReservationFrontEnd(inputsanitisers.PrimitiveTypeInputSanitiser())
